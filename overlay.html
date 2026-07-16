@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overlay Donasi Stream</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+      }
+      .overlay-wrap {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: end center;
+        pointer-events: none;
+      }
+      .alert-card {
+        width: min(420px, 90%);
+        padding: 18px 22px;
+        border-radius: 22px;
+        background: rgba(5, 10, 20, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(18px);
+        transform: translateY(30px);
+        opacity: 0;
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+      .alert-card.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .alert-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .alert-top strong {
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+      .alert-body {
+        display: grid;
+        gap: 8px;
+      }
+      .alert-body h2 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+      .alert-body p {
+        margin: 0;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="overlay-wrap">
+      <div id="alertCard" class="alert-card">
+        <div class="alert-top">
+          <span id="donorName">Anon</span>
+          <strong id="donorAmount">Rp 0</strong>
+        </div>
+        <div class="alert-body">
+          <h2>Donasi Masuk!</h2>
+          <p id="donorMessage">Terima kasih atas dukunganmu.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const alertCard = document.getElementById("alertCard");
+      const donorName = document.getElementById("donorName");
+      const donorAmount = document.getElementById("donorAmount");
+      const donorMessage = document.getElementById("donorMessage");
+
+      async function fetchLatest() {
+        try {
+          const response = await fetch("/api/donations");
+          if (!response.ok) return;
+          const data = await response.json();
+          if (!data.length) return;
+
+          const latest = data[0];
+          const lastSeen = sessionStorage.getItem("lastDonationId");
+
+          if (String(latest.id) !== lastSeen) {
+            sessionStorage.setItem("lastDonationId", latest.id);
+            donorName.textContent = latest.name || "Anon";
+            donorAmount.textContent = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(latest.amount);
+            donorMessage.textContent = latest.message || "Terima kasih atas dukunganmu.";
+            alertCard.classList.add("show");
+            setTimeout(() => alertCard.classList.remove("show"), 5000);
+          }
+        } catch (error) {
+          // ignore
+        }
+      }
+
+      setInterval(fetchLatest, 2500);
+      fetchLatest();
+    </script>
+  </body>
+</html>

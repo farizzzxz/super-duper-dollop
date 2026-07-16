@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Creator - Donasi Stream</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="owner-page">
+    <div class="background-glow"></div>
+
+    <header class="hero owner-hero">
+      <div class="status-pill" id="liveBadge">● LIVE NOW</div>
+      <div class="hero-owner-head">
+        <div>
+          <h1>Dashboard Creator</h1>
+          <p>Kelola donasi, lihat notifikasi masuk, dan gunakan link donor sebagai overlay untuk OBS.</p>
+        </div>
+        <a href="donor.html" class="btn btn-secondary small">Buka Halaman Donatur</a>
+      </div>
+    </header>
+
+    <main class="dashboard owner-dashboard">
+      <section class="panel stats-card owner-stats">
+        <div class="stat">
+          <span class="label">Total Terkumpul</span>
+          <strong id="totalRaised">Rp 0</strong>
+        </div>
+        <div class="stat">
+          <span class="label">Supporter</span>
+          <strong id="supporterCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="label">Target Bulanan</span>
+          <strong id="goalLabel">Rp 4.000.000</strong>
+        </div>
+      </section>
+
+      <section class="panel owner-income-panel">
+        <div class="owner-section-head">
+          <h2>Pemasukan Bank Virtual</h2>
+          <span class="hint">Ringkasan total masuk berdasarkan metode pembayaran</span>
+        </div>
+        <div id="incomeBreakdown" class="income-grid"></div>
+      </section>
+
+      <section class="panel owner-bank-panel">
+        <div class="owner-bank-head">
+          <h2>Saldo & Penarikan</h2>
+          <span class="bank-status" id="bankStatus">Rekening belum disimpan</span>
+        </div>
+        <div class="bank-summary">
+          <div>
+            <span class="label">Saldo dapat ditarik</span>
+            <strong id="availableBalance">Rp 0</strong>
+          </div>
+          <div>
+            <span class="label">Metode Penarikan</span>
+            <strong id="bankMethod">DANA</strong>
+          </div>
+        </div>
+        <form class="withdraw-form" id="withdrawForm">
+          <label>
+            <span>Metode Penarikan</span>
+            <select id="bankSelect">
+              <option value="DANA">DANA</option>
+              <option value="OVO">OVO</option>
+              <option value="GoPay">GoPay</option>
+              <option value="BCA">BCA</option>
+              <option value="BRI">BRI</option>
+              <option value="Bank Seabank">Bank Seabank</option>
+            </select>
+          </label>
+          <label>
+            <span>Nomor Rekening / Wallet</span>
+            <input id="accountInput" type="text" placeholder="0812xxxx..." />
+          </label>
+          <label>
+            <span>Nama Pemilik Rekening</span>
+            <input id="accountNameInput" type="text" placeholder="Nama sesuai rekening" />
+          </label>
+          <div class="bank-target">
+            <span>Tujuan Tarik Dana</span>
+            <strong id="withdrawTarget">Bank Seabank • 3001234567</strong>
+          </div>
+          <button id="saveBankButton" type="button" class="btn btn-secondary full">Simpan Rekening</button>
+          <button id="withdrawButton" type="button" class="btn btn-primary full">Ajukan Penarikan ke Bank Seabank</button>
+          <p class="owner-note">Penarikan akan diproses saat kamu siap. Pastikan nomor rekening/wallet yang dimasukkan benar.</p>
+        </form>
+      </section>
+
+      <section class="panel withdraw-history-panel">
+        <div class="owner-section-head">
+          <h2>Riwayat Penarikan</h2>
+          <span class="hint">Status pengajuan penarikan ke Bank Seabank</span>
+        </div>
+        <ul id="withdrawalHistory" class="withdraw-history"></ul>
+      </section>
+
+      <section class="panel owner-quick-actions">
+        <div class="owner-quick-header">
+          <h2>Link Donatur</h2>
+          <button id="copyOverlayUrl" class="btn btn-secondary small">Salin Link</button>
+        </div>
+        <div class="owner-url-box" id="overlayLinks">
+          <span id="overlayLink">http://localhost:3000/donor.html</span>
+        </div>
+        <p class="owner-note">Bagikan salah satu alamat di bawah ke penonton di jaringan yang sama. Pastikan stream PC dan device penonton terhubung ke Wi-Fi/LAN yang sama.</p>
+      </section>
+
+      <section class="panel owner-quick-actions">
+        <div class="owner-quick-header">
+          <h2>Halaman Overlay</h2>
+          <a href="overlay.html" class="btn btn-secondary small">Buka Overlay</a>
+        </div>
+        <div class="owner-url-box">
+          <span>http://localhost:3000/overlay.html</span>
+        </div>
+        <p class="owner-note">Gunakan halaman ini sebagai Browser Source untuk menampilkan notifikasi donasi di OBS.</p>
+      </section>
+
+      <section class="panel owner-quick-actions">
+        <div class="owner-quick-header">
+          <h2>QRIS Asli</h2>
+        </div>
+        <div class="owner-url-box owner-qris-box">
+          <img src="qris.svg" alt="QRIS Placeholder" class="qris-image" />
+        </div>
+        <p class="owner-note">Ganti file <strong>qris.svg</strong> di folder ini dengan QR code QRIS asli dari akun kamu.</p>
+      </section>
+
+      <section class="panel goal-panel owner-goal-panel">
+        <div class="goal-head">
+          <span>Progres saat ini</span>
+          <strong id="goalPercent">0%</strong>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill"></div>
+        </div>
+        <div class="goal-meta">
+          <span>Masih butuh Rp <strong id="remainingGoal">4.000.000</strong></span>
+          <span id="topDonation">Donasi terbesar: Rp 0</span>
+        </div>
+      </section>
+
+      <section class="panel owner-feed">
+        <div class="feed-head">
+          <h2>Aktivitas Donasi</h2>
+          <span class="hint">Update otomatis setiap 3 detik</span>
+        </div>
+        <ul id="donationFeed"></ul>
+      </section>
+
+      <section class="panel owner-settings">
+        <h2>Pengaturan Halaman</h2>
+        <p>Di sini kamu dapat melihat alur donasi yang akan dipakai oleh penonton dan menyalin URL halaman donatur.</p>
+        <div class="settings-grid">
+          <div>
+            <span class="label">Nama Channel</span>
+            <strong>Farizzau</strong>
+          </div>
+          <div>
+            <span class="label">Metode Publik</span>
+            <strong>QRIS / Transfer Bank</strong>
+          </div>
+          <div>
+            <span class="label">Halaman Donatur</span>
+            <strong>donor.html</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+
+    <script src="owner.js"></script>
+  </body>
+</html>
