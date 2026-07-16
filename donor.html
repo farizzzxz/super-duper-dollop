@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donasi untuk Streamer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="donor-page">
+    <div class="background-glow"></div>
+
+    <header class="hero donor-hero">
+      <div class="status-pill">DONATE PAGE</div>
+      <h1>Dukung Streamer</h1>
+      <p>Isi form di bawah ini, transfer sesuai instruksi, lalu konfirmasi. Donasimu akan muncul di dashboard streamer.</p>
+    </header>
+
+    <main class="dashboard donor-dashboard">
+      <section class="panel donation-panel donor-panel">
+        <h2>Form Donasi</h2>
+        <form id="donationForm">
+          <label>
+            Nama kamu
+            <input id="nameInput" type="text" placeholder="Contoh: Asep" required />
+          </label>
+
+          <label>
+            Nominal yang ingin didonasikan
+            <select id="amountInput" required>
+              <option value="10000">Rp 10.000</option>
+              <option value="25000">Rp 25.000</option>
+              <option value="50000">Rp 50.000</option>
+              <option value="100000">Rp 100.000</option>
+              <option value="250000">Rp 250.000</option>
+            </select>
+          </label>
+
+          <label>
+            Pesan untuk streamer
+            <textarea id="messageInput" rows="3" placeholder="Semoga live-nya makin seru!"></textarea>
+          </label>
+
+          <label>
+            Metode pembayaran
+            <select id="methodInput" required>
+              <option value="QRIS">QRIS</option>
+              <option value="DANA">DANA</option>
+              <option value="OVO">OVO</option>
+              <option value="GoPay">GoPay</option>
+              <option value="Bank Seabank">Bank Seabank</option>
+            </select>
+          </label>
+
+          <button type="submit" class="btn btn-primary full">Donasi Sekarang</button>
+        </form>
+      </section>
+
+      <section class="panel donor-info-panel">
+        <h2>Instruksi Pembayaran</h2>
+        <div class="payment-info">
+          <div>
+            <span class="label">Akun Tujuan</span>
+            <strong>Farizzau Stream</strong>
+          </div>
+          <div>
+            <span class="label">QRIS</span>
+            <strong>Scan QR di bawah</strong>
+          </div>
+          <div>
+            <span class="label">Bank Virtual</span>
+            <strong>DANA / OVO / GoPay / Bank Seabank</strong>
+          </div>
+        </div>
+        <div class="qr-box donor-qr">
+          <img src="qris.svg" alt="QRIS Asli" class="qris-image" />
+        </div>
+        <p class="obs-copy">Jika kamu berada di device lain, buka alamat yang dibagikan streamer di jaringan lokal. Untuk OBS, gunakan URL tersebut sebagai Browser Source.</p>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+
+    <script src="donor.js"></script>
+  </body>
+</html>

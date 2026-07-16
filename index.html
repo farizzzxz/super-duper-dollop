@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donasi Streaming Live</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+
+    <header class="hero">
+      <div class="status-pill" id="liveBadge">● LIVE NOW</div>
+      <h1>Support My Stream</h1>
+      <p>
+        Dukungan dari penonton membantu menjaga kualitas stream, konten, dan operasional harian. Setiap donasi sangat berarti.
+      </p>
+      <div class="hero-actions">
+        <button id="toggleLive" class="btn btn-primary">Aktifkan mode streaming</button>
+        <button id="quickCheer" class="btn btn-secondary">Kirim semangat</button>
+      </div>
+      <div class="hero-cta">
+        <div class="hero-cta-box">
+          <strong>Donasi sekarang</strong>
+          <span>Isi form di bawah, lalu transfer. Donasi langsung masuk ke dashboard.</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard">
+      <section class="stats-card panel">
+        <div class="stat">
+          <span class="label">Terkumpul</span>
+          <strong id="totalRaised">Rp 0</strong>
+        </div>
+        <div class="stat">
+          <span class="label">Supporter</span>
+          <strong id="supporterCount">0</strong>
+        </div>
+        <div class="stat">
+          <span class="label">Penonton Live</span>
+          <strong id="viewerCount">1.248</strong>
+        </div>
+      </section>
+
+      <section class="panel goal-panel">
+        <div class="goal-head">
+          <span>Target bulanan</span>
+          <strong id="goalLabel">Rp 4.000.000</strong>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill"></div>
+        </div>
+        <div class="goal-meta">
+          <span id="goalPercent">0%</span>
+          <span>Masih butuh Rp <span id="remainingGoal">4.000.000</span></span>
+        </div>
+        <div id="celebrateArea" class="celebrate-area"></div>
+      </section>
+
+      <section class="panel donation-panel">
+        <div class="donation-header">
+          <h2>Isi form dukungan</h2>
+          <span class="chip">Donasi langsung ke kamu</span>
+        </div>
+        <p class="donation-intro">
+          Penonton tinggal isi nama, nominal, lalu klik lanjut bayar. Setelah transfer, donasi akan masuk ke dashboard live kamu secara otomatis.
+        </p>
+        <form id="donationForm">
+          <label>
+            Nama
+            <input id="nameInput" type="text" placeholder="Contoh: Raka" required />
+          </label>
+
+          <label>
+            Nominal
+            <select id="amountInput" required>
+              <option value="10000">Rp 10.000</option>
+              <option value="25000">Rp 25.000</option>
+              <option value="50000">Rp 50.000</option>
+              <option value="100000">Rp 100.000</option>
+              <option value="250000">Rp 250.000</option>
+            </select>
+          </label>
+
+          <label>
+            Pesan
+            <textarea id="messageInput" rows="3" placeholder="Semangat terus stream-nya!"></textarea>
+          </label>
+
+          <label>
+            Metode dukungan
+            <select id="methodInput">
+              <option value="QRIS">QRIS</option>
+              <option value="E-Wallet">E-Wallet</option>
+              <option value="Transfer Bank">Transfer Bank</option>
+            </select>
+          </label>
+
+          <button type="submit" class="btn btn-primary full">Lanjut bayar</button>
+        </form>
+      </section>
+
+      <section class="panel feed-panel">
+        <div class="feed-head">
+          <h2>Live supporter feed</h2>
+          <span class="hint">Update real-time lokal</span>
+        </div>
+        <ul id="donationFeed"></ul>
+      </section>
+
+      <section class="panel obs-panel">
+        <h2>Untuk OBS / Stream</h2>
+        <p class="obs-copy">
+          Buka halaman ini di browser, lalu tambahkan browser source di OBS dengan URL berikut. Saat ada donasi, notifikasi akan muncul di atas layar.
+        </p>
+        <div class="obs-url-box">
+          <span id="obsUrl">file:///C:/Users/PC/Documents/donate%20sendiri/index.html</span>
+          <button id="copyUrl" class="btn btn-secondary small">Salin URL</button>
+        </div>
+        <div class="obs-steps">
+          <div>1. Tambahkan Browser Source di OBS</div>
+          <div>2. Masukkan URL di atas</div>
+          <div>3. Atur lebar/tinggi sesuai overlay</div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
+    <div id="floatingSupport" class="floating-support">
+      <button id="openSupport" class="btn btn-primary">Support Now</button>
+    </div>
+
+    <div id="paymentModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card">
+        <button id="closeModal" class="modal-close" type="button" aria-label="Tutup">×</button>
+        <h3>Bayar donasi ke akun streaming</h3>
+        <p id="paymentSummary" class="modal-summary"></p>
+
+        <div class="payment-methods">
+          <div class="method-pill active">QRIS</div>
+          <div class="method-pill">E-Wallet</div>
+          <div class="method-pill">Transfer Bank</div>
+        </div>
+
+        <div class="qr-box">Scan QRIS</div>
+
+        <div class="payment-details">
+          <p><strong>Tujuan:</strong> <span id="paymentTarget">Budi Streaming</span></p>
+          <p><strong>Nominal:</strong> <span id="modalAmount">Rp 0</span></p>
+          <p><strong>Catatan:</strong> <span id="modalMessage">-</span></p>
+        </div>
+
+        <button id="confirmDonation" class="btn btn-primary full">Saya sudah transfer</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
